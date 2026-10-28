@@ -1,0 +1,3 @@
+FPS = 15
+FRAME_RATE = 1 / FPS
+BASHIN = 2.5

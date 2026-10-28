@@ -1,0 +1,8 @@
+[project]
+name = "horse-racing-sim"
+version = "0.0.1"
+dependencies = [
+    "pytest",
+    "pydantic",
+    "python-state-machine"
+]

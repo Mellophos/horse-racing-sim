@@ -1,0 +1,108 @@
+{
+  "course_id": "course_10006_turf_main_2500",
+  "name": "Tokyo",
+  "surface": 0,
+  "distance": 2500,
+  "events": [
+    {
+      "id": 2,
+      "trigger_at": 0,
+      "straight_type": 1,
+      "is_start": true
+    },
+    {
+      "id": 5,
+      "trigger_at": 0,
+      "gradient": 1.19,
+      "length": 122
+    },
+    {
+      "id": 2,
+      "trigger_at": 500,
+      "straight_type": 1,
+      "is_start": false
+    },
+    {
+      "id": 0,
+      "trigger_at": 500,
+      "corner_number": 1,
+      "length": 263
+    },
+    {
+      "id": 5,
+      "trigger_at": 602,
+      "gradient": -0.28,
+      "length": 617
+    },
+    {
+      "id": 0,
+      "trigger_at": 763,
+      "corner_number": 2,
+      "length": 258
+    },
+    {
+      "id": 2,
+      "trigger_at": 1021,
+      "straight_type": 2,
+      "is_start": true
+    },
+    {
+      "id": 5,
+      "trigger_at": 1219,
+      "gradient": 1.75,
+      "length": 80
+    },
+    {
+      "id": 5,
+      "trigger_at": 1355,
+      "gradient": -0.84,
+      "length": 263
+    },
+    {
+      "id": 2,
+      "trigger_at": 1465,
+      "straight_type": 2,
+      "is_start": false
+    },
+    {
+      "id": 0,
+      "trigger_at": 1465,
+      "corner_number": 3,
+      "length": 265
+    },
+    {
+      "id": 5,
+      "trigger_at": 1618,
+      "gradient": 0.1,
+      "length": 411
+    },
+    {
+      "id": 0,
+      "trigger_at": 1730,
+      "corner_number": 4,
+      "length": 245
+    },
+    {
+      "id": 4,
+      "trigger_at": 1730
+    },
+    {
+      "id": 2,
+      "trigger_at": 1975,
+      "straight_type": 1,
+      "is_start": true
+    },
+    {
+      "id": 5,
+      "trigger_at": 2029,
+      "gradient": 1.19,
+      "length": 176
+    },
+    {
+      "id": 2,
+      "trigger_at": 2500,
+      "straight_type": 1,
+      "is_start": false
+    }
+  ]
+}

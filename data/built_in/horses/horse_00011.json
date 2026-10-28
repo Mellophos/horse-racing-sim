@@ -1,0 +1,30 @@
+{
+    "horse_id": "horse_00011",
+    "name": "Grass Wonder",
+    "aptitudes": {
+        "surfaces": {
+            "turf": 7,
+            "dirt": 1
+        },
+        "distances": {
+            "sprint": 5,
+            "mile": 7,
+            "intermediate": 7,
+            "long": 7,
+            "extended": 1
+        },
+        "strategies": {
+            "front": 2,
+            "pace": 7,
+            "late": 7,
+            "end": 2
+        }
+    },
+    "stats": {
+        "speed": 118,
+        "stamina": 91,
+        "power": 129,
+        "guts": 96,
+        "wit": 116
+    }
+}
