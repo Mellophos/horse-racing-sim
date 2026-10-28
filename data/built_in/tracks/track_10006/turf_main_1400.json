@@ -1,0 +1,78 @@
+{
+  "course_id": "course_10006_turf_main_1400",
+  "name": "Tokyo",
+  "surface": 0,
+  "distance": 1400,
+  "events": [
+    {
+      "id": 2,
+      "trigger_at": 0,
+      "straight_type": 2,
+      "is_start": true
+    },
+    {
+      "id": 5,
+      "trigger_at": 0,
+      "gradient": -0.28,
+      "length": 119
+    },
+    {
+      "id": 5,
+      "trigger_at": 119,
+      "gradient": 1.75,
+      "length": 80
+    },
+    {
+      "id": 5,
+      "trigger_at": 255,
+      "gradient": -0.84,
+      "length": 263
+    },
+    {
+      "id": 2,
+      "trigger_at": 365,
+      "straight_type": 2,
+      "is_start": false
+    },
+    {
+      "id": 0,
+      "trigger_at": 365,
+      "corner_number": 3,
+      "length": 265
+    },
+    {
+      "id": 5,
+      "trigger_at": 518,
+      "gradient": 0.1,
+      "length": 411
+    },
+    {
+      "id": 0,
+      "trigger_at": 630,
+      "corner_number": 4,
+      "length": 245
+    },
+    {
+      "id": 4,
+      "trigger_at": 630
+    },
+    {
+      "id": 2,
+      "trigger_at": 875,
+      "straight_type": 1,
+      "is_start": true
+    },
+    {
+      "id": 5,
+      "trigger_at": 929,
+      "gradient": 1.19,
+      "length": 176
+    },
+    {
+      "id": 2,
+      "trigger_at": 1400,
+      "straight_type": 1,
+      "is_start": false
+    }
+  ]
+}
