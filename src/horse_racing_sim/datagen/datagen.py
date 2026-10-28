@@ -3,14 +3,14 @@ import re
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from src.horse_racing_sim.config import DATA_DIR
 from json_validator import JsonTemplateValidator
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 class JsonDataGenerator:
     def __init__(self, output_dir: str = "built_in"):
-        self.output_dir = Path(PROJECT_ROOT / "data" / output_dir)
+        self.output_dir = Path(DATA_DIR / output_dir)
         self.providers = []
 
     def add_provider(self, provider_class):
@@ -64,7 +64,7 @@ class HorseProvider(BaseJsonProvider):
     def __init__(self, output_dir):
         super().__init__(
             output_dir,
-            PROJECT_ROOT / "data" / "horse.example.json"
+            DATA_DIR / "horse.example.json"
         )
 
     def generate(self):
@@ -87,7 +87,7 @@ class TrackProvider(BaseJsonProvider):
     def __init__(self, output_dir):
         super().__init__(
             output_dir,
-            PROJECT_ROOT / "data" / "track.example.json"
+            DATA_DIR / "track.example.json"
         )
 
     def generate(self):
