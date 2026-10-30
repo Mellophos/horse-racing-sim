@@ -10,7 +10,7 @@ def load_schema(identifier: str) -> dict:
     name, version = parse_schema_identifier(identifier)
 
     schema_path = (
-            files("horse_racing_sim")
+            files("horseracing_sim")
             / "assets"
             / "schemas"
             / name

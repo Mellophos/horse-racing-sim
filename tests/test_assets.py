@@ -5,7 +5,7 @@ import pytest
 
 from horse_racing_sim.validation.json_validator import validate_json
 
-ASSETS_DIR = files("horse_racing_sim") / "assets"
+ASSETS_DIR = files("horseracing_sim") / "assets"
 
 JSON_FILES = [
     path

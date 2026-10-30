@@ -1,7 +1,7 @@
 import json
 from importlib import resources
 
-HORSES_PACKAGE = "horse_racing_sim.assets.horses"
+HORSES_PACKAGE = "horseracing_sim.assets.horses"
 
 
 def get(horse_id: str | int) -> dict:
@@ -27,6 +27,6 @@ def list_all() -> dict:
         if item.is_file() and item.name.endswith(".json"):
             with item.open() as f:
                 data = json.load(f)
-            ids[data["horse_id"]] = data["name"]
+            ids[data["id"]] = data["name"]
 
     return ids

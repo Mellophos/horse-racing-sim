@@ -11,7 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 class JsonDataGenerator:
     def __init__(self):
-        self.output_dir = Path(PROJECT_ROOT / "src/horse_racing_sim/assets")
+        self.output_dir = Path(PROJECT_ROOT / "src/horseracing_sim/assets")
         self.providers = []
 
     def add_provider(self, provider_class, schema_identifier: str):
