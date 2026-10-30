@@ -5,7 +5,7 @@ from pathlib import Path
 
 from jsonschema.validators import Draft202012Validator
 
-from horse_racing_sim.validation.json_validator import load_schema
+from horseracing_sim.validation.json_validator import load_schema
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
