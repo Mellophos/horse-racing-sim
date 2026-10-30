@@ -1,4 +1,4 @@
-# horse-racing-sim
+# horseracing-sim
 
 ### !  This project is currently under active development  !
 
@@ -19,15 +19,15 @@ Creating a deep and intricate horse racing simulation that is highly customisabl
 ## Roadmap
 
 - [ ] Minimum Viable Product: get the new project to (almost) the same state as the old branch
-- [ ] Core Foundations: define various data types to be used throughout the project
+- [ ] Foundations: define core data types and models used throughout the project
 
 ## References
 
-The following are resources used as the foundation for this simulation:
+The following resources are used as for this simulation:
 
-- [Uma Musume Race Mechanics](https://docs.google.com/document/d/15VzW9W2tXBBTibBRbZ8IVpW6HaMX8H0RP03kq6Az7Xg)
+- [Umamusume Race Mechanics (Google Document)](https://docs.google.com/document/d/15VzW9W2tXBBTibBRbZ8IVpW6HaMX8H0RP03kq6Az7Xg)
 - [GameTora](https://gametora.com/umamusume)
 
-## Installation Steps
+## Installation
 
-Work in progress, installation steps are subject to change.
+*Work in progress, installation steps are subject to change.*
