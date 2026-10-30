@@ -8,8 +8,9 @@ from .constants import Surface, Grade, DistanceCat, Strategy
 class Horse(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    horse_id: str = Field(pattern=r"^horse_[0-9]{5}$")
-    name: str = Field(min_length=1, max_length=18)
+    version: str = Field(alias="$version")
+    id: str = Field(pattern=r"^horse_[0-9]{5}$")
+    name: str = Field(min_length=2, max_length=18)
     stats: Stats
     aptitudes: Aptitudes
 
