@@ -1,8 +1,13 @@
 [project]
-name = "horse-racing-sim"
+name = "horseracing-sim"
 version = "0.0.1"
+description = "Horse race simulation in Python"
+authors = [{ name = "Mellophos" }]
+maintainers = [{ name = "Mellophos" }]
+readme = "README.md"
 dependencies = [
     "pytest",
+    "jsonschema",
     "pydantic",
-    "python-state-machine"
+    "python-statemachine"
 ]
