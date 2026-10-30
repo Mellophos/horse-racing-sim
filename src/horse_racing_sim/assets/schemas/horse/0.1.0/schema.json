@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:assets:horse-0.1.0",
+  "title": "Horse",
+  "description": "A horse JSON",
+  "type": "object",
+  "properties": {
+    "$version": {
+      "type": "string",
+      "const": "horse-0.1.0"
+    },
+    "id": {
+      "description": "The unique identifier for a horse",
+      "type": "string",
+      "pattern": "^horse_[0-9]{5}$"
+    },
+    "name": {
+      "description": "The horse's name",
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 18
+    },
+    "stats": {
+      "description": "Integer stat values defining the capabilities of the horse",
+      "type": "object",
+      "properties": {
+        "speed": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2500
+        },
+        "stamina": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2500
+        },
+        "power": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2500
+        },
+        "guts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2500
+        },
+        "wit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2500
+        }
+      },
+      "required": [
+        "speed",
+        "stamina",
+        "power",
+        "guts",
+        "wit"
+      ],
+      "additionalProperties": false
+    },
+    "aptitudes": {
+      "description": "The horse's aptitudes for various racing conditions and strategies",
+      "type": "object",
+      "properties": {
+        "surfaces": {
+          "description": "The horse's aptitude for various surfaces",
+          "type": "object",
+          "properties": {
+            "turf": {
+              "description": "The horse's aptitude for turf",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "dirt": {
+              "description": "The horse's aptitude for dirt",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            }
+          },
+          "required": [
+            "turf",
+            "dirt"
+          ],
+          "additionalProperties": false
+        },
+        "distances": {
+          "description": "The horse's aptitude for various distances",
+          "type": "object",
+          "properties": {
+            "sprint": {
+              "description": "The horse's aptitude for sprint distances",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "mile": {
+              "description": "The horse's aptitude for mile distances",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "intermediate": {
+              "description": "The horse's aptitude for intermediate distances",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "long": {
+              "description": "The horse's aptitude for long distances",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "extended": {
+              "description": "The horse's aptitude for extended distances",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            }
+          },
+          "required": [
+            "sprint",
+            "mile",
+            "intermediate",
+            "long",
+            "extended"
+          ],
+          "additionalProperties": false
+        },
+        "strategies": {
+          "description": "The horse's aptitude for various racing strategies",
+          "type": "object",
+          "properties": {
+            "front": {
+              "description": "The horse's aptitude for front-runner strategy",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "pace": {
+              "description": "The horse's aptitude for pace-chaser strategy",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "late": {
+              "description": "The horse's aptitude for late-surger strategy",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "end": {
+              "description": "The horse's aptitude for end-closer strategy",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            }
+          },
+          "required": [
+            "front",
+            "pace",
+            "late",
+            "end"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "surfaces",
+        "distances",
+        "strategies"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "$version",
+    "id",
+    "name",
+    "aptitudes",
+    "stats"
+  ],
+  "additionalProperties": false
+}
