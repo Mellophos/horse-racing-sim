@@ -1,0 +1,31 @@
+{
+    "$version": "horse-0.1.0",
+    "id": "horse_00003",
+    "name": "Tokai Teio",
+    "aptitudes": {
+        "surfaces": {
+            "turf": 7,
+            "dirt": 1
+        },
+        "distances": {
+            "sprint": 1,
+            "mile": 4,
+            "intermediate": 7,
+            "long": 7,
+            "extended": 5
+        },
+        "strategies": {
+            "front": 4,
+            "pace": 7,
+            "late": 5,
+            "end": 3
+        }
+    },
+    "stats": {
+        "speed": 109,
+        "stamina": 109,
+        "power": 102,
+        "guts": 112,
+        "wit": 118
+    }
+}

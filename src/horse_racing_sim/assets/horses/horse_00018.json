@@ -1,0 +1,31 @@
+{
+    "$version": "horse-0.1.0",
+    "id": "horse_00018",
+    "name": "Air Groove",
+    "aptitudes": {
+        "surfaces": {
+            "turf": 7,
+            "dirt": 1
+        },
+        "distances": {
+            "sprint": 4,
+            "mile": 6,
+            "intermediate": 7,
+            "long": 7,
+            "extended": 1
+        },
+        "strategies": {
+            "front": 4,
+            "pace": 7,
+            "late": 7,
+            "end": 1
+        }
+    },
+    "stats": {
+        "speed": 111,
+        "stamina": 105,
+        "power": 105,
+        "guts": 112,
+        "wit": 117
+    }
+}

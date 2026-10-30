@@ -1,0 +1,31 @@
+{
+    "$version": "horse-0.1.0",
+    "id": "horse_00007",
+    "name": "Gold Ship",
+    "aptitudes": {
+        "surfaces": {
+            "turf": 7,
+            "dirt": 1
+        },
+        "distances": {
+            "sprint": 1,
+            "mile": 5,
+            "intermediate": 7,
+            "long": 7,
+            "extended": 7
+        },
+        "strategies": {
+            "front": 1,
+            "pace": 6,
+            "late": 6,
+            "end": 7
+        }
+    },
+    "stats": {
+        "speed": 106,
+        "stamina": 124,
+        "power": 129,
+        "guts": 99,
+        "wit": 92
+    }
+}

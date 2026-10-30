@@ -1,0 +1,31 @@
+{
+    "$version": "horse-0.1.0",
+    "id": "horse_00009",
+    "name": "Daiwa Scarlet",
+    "aptitudes": {
+        "surfaces": {
+            "turf": 7,
+            "dirt": 1
+        },
+        "distances": {
+            "sprint": 1,
+            "mile": 7,
+            "intermediate": 7,
+            "long": 7,
+            "extended": 1
+        },
+        "strategies": {
+            "front": 7,
+            "pace": 7,
+            "late": 3,
+            "end": 1
+        }
+    },
+    "stats": {
+        "speed": 109,
+        "stamina": 99,
+        "power": 103,
+        "guts": 122,
+        "wit": 117
+    }
+}

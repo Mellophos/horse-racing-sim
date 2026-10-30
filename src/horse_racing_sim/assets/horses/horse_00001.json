@@ -1,0 +1,31 @@
+{
+    "$version": "horse-0.1.0",
+    "id": "horse_00001",
+    "name": "Special Week",
+    "aptitudes": {
+        "surfaces": {
+            "turf": 7,
+            "dirt": 1
+        },
+        "distances": {
+            "sprint": 2,
+            "mile": 5,
+            "intermediate": 7,
+            "long": 7,
+            "extended": 7
+        },
+        "strategies": {
+            "front": 1,
+            "pace": 7,
+            "late": 7,
+            "end": 5
+        }
+    },
+    "stats": {
+        "speed": 102,
+        "stamina": 108,
+        "power": 120,
+        "guts": 110,
+        "wit": 110
+    }
+}

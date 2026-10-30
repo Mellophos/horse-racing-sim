@@ -1,0 +1,31 @@
+{
+    "$version": "horse-0.1.0",
+    "id": "horse_00010",
+    "name": "Taiki Shuttle",
+    "aptitudes": {
+        "surfaces": {
+            "turf": 7,
+            "dirt": 6
+        },
+        "distances": {
+            "sprint": 7,
+            "mile": 7,
+            "intermediate": 1,
+            "long": 1,
+            "extended": 1
+        },
+        "strategies": {
+            "front": 5,
+            "pace": 7,
+            "late": 3,
+            "end": 1
+        }
+    },
+    "stats": {
+        "speed": 118,
+        "stamina": 87,
+        "power": 119,
+        "guts": 113,
+        "wit": 113
+    }
+}

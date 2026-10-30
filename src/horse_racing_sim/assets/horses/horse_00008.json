@@ -1,0 +1,31 @@
+{
+    "$version": "horse-0.1.0",
+    "id": "horse_00008",
+    "name": "Vodka",
+    "aptitudes": {
+        "surfaces": {
+            "turf": 7,
+            "dirt": 1
+        },
+        "distances": {
+            "sprint": 1,
+            "mile": 7,
+            "intermediate": 7,
+            "long": 7,
+            "extended": 1
+        },
+        "strategies": {
+            "front": 5,
+            "pace": 6,
+            "late": 7,
+            "end": 2
+        }
+    },
+    "stats": {
+        "speed": 124,
+        "stamina": 79,
+        "power": 136,
+        "guts": 97,
+        "wit": 114
+    }
+}
