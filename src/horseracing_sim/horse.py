@@ -6,7 +6,13 @@ from .constants import Surface, Grade, DistanceCat, Strategy
 
 
 class Horse(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(
+        extra="forbid",
+        frozen=True,
+        strict=True,
+        serialize_by_alias=True,
+        populate_by_name=True,
+    )
 
     version: str = Field(alias="$version")
     id: str = Field(pattern=r"^horse_[0-9]{5}$")
@@ -16,7 +22,7 @@ class Horse(BaseModel):
 
 
 class Stats(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
 
     speed: float = Field(ge=1, le=2500)
     stamina: float = Field(ge=1, le=2500)
