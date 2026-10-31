@@ -1,26 +1,20 @@
+import json
+
 import pytest
 from pydantic import ValidationError
 
-from src.horse_racing_sim.constants import Surface, Grade, DistanceCat, \
-    Strategy
-from src.horse_racing_sim.horse import Horse, Stats, Aptitudes
+from horseracing_sim.constants import Surface, Grade, DistanceCat, Strategy
+from horseracing_sim.horse import Horse, Stats, Aptitudes
 
-stats = {
-    "speed": 100,
-    "stamina": 100,
-    "power": 100,
-    "guts": 100,
-    "wit": 100,
-}
 
 @pytest.fixture
 def valid_stats():
     return {
-        "speed": 1000,
-        "stamina": 900,
-        "power": 800,
-        "guts": 700,
-        "wit": 600,
+        "speed": 1500.0,
+        "stamina": 1200.0,
+        "power": 1300.0,
+        "guts": 1000.0,
+        "wit": 1400.0,
     }
 
 
@@ -28,24 +22,57 @@ def valid_stats():
 def valid_aptitudes():
     return {
         "surfaces": {
-            Surface.TURF: Grade.A,
+            Surface.TURF.name: Grade.A.value,
+            Surface.DIRT.name: Grade.F.value,
         },
         "distances": {
-            DistanceCat.MILE: Grade.B,
+            DistanceCat.SPRINT.name: Grade.B.value,
+            DistanceCat.MILE.name: Grade.A.value,
+            DistanceCat.INTERMEDIATE.name: Grade.C.value,
+            DistanceCat.LONG.name: Grade.E.value,
+            DistanceCat.EXTENDED.name: Grade.G.value,
         },
         "strategies": {
-            Strategy.FRONT: Grade.C,
+            Strategy.FRONT.name: Grade.S.value,
+            Strategy.PACE.name: Grade.A.value,
+            Strategy.LATE.name: Grade.E.value,
+            Strategy.END.name: Grade.G.value,
         },
     }
 
 
 @pytest.fixture
-def valid_horse_data(valid_stats, valid_aptitudes):
+def valid_horse():
     return {
-        "horse_id": "horse_12345",
-        "name": "Silver Comet",
-        "stats": valid_stats,
-        "aptitudes": valid_aptitudes,
+        "$version": "horse-0.1.0",
+        "id": "horse_12345",
+        "name": "Thunder",
+        "stats": {
+            "speed": 1500.0,
+            "stamina": 1200.0,
+            "power": 1300.0,
+            "guts": 1000.0,
+            "wit": 1400.0,
+        },
+        "aptitudes": {
+            "surfaces": {
+                "turf": 7,
+                "dirt": 6,
+            },
+            "distances": {
+                "sprint": 7,
+                "mile": 7,
+                "intermediate": 6,
+                "long": 5,
+                "extended": 4,
+            },
+            "strategies": {
+                "front": 7,
+                "pace": 6,
+                "late": 5,
+                "end": 4,
+            },
+        },
     }
 
 
@@ -53,206 +80,369 @@ def valid_horse_data(valid_stats, valid_aptitudes):
 # Stats tests
 # ------------------------------------------------------------------
 
-@pytest.mark.parametrize(
-    "field",
-    ["speed", "stamina", "power", "guts", "wit"],
-)
-@pytest.mark.parametrize("value", [1, 2500, 100.5])
-def test_stats_accept_valid_values(field, value):
-    stats[field] = value
+class TestStats:
 
-    result = Stats.model_validate(stats)
+    def test_valid_stats(self, valid_stats):
+        stats = Stats(**valid_stats)
 
-    assert getattr(result, field) == value
+        assert stats.speed == 1500.0
+        assert stats.stamina == 1200.0
+        assert stats.power == 1300.0
+        assert stats.guts == 1000.0
+        assert stats.wit == 1400.0
 
-
-@pytest.mark.parametrize(
-    "field",
-    ["speed", "stamina", "power", "guts", "wit"],
-)
-@pytest.mark.parametrize("value", [0, 2501, -1])
-def test_stats_reject_out_of_range_values(field, value):
-    stats[field] = value
-
-    with pytest.raises(ValidationError):
-        Stats.model_validate(stats)
-
-
-def test_stats_reject_missing_field():
-    with pytest.raises(ValidationError):
-        Stats.model_validate({
-            "speed": 100,
-            "stamina": 100,
-            "power": 100,
-            "guts": 100,
-        })
-
-
-def test_stats_reject_extra_field(valid_stats):
-    valid_stats["luck"] = 100
-
-    with pytest.raises(ValidationError):
-        Stats.model_validate(valid_stats)
-
-
-def test_stats_are_immutable():
-    stats = Stats(
-        speed=100,
-        stamina=100,
-        power=100,
-        guts=100,
-        wit=100,
+    @pytest.mark.parametrize(
+        "field",
+        ["speed", "stamina", "power", "guts", "wit"],
     )
+    @pytest.mark.parametrize("value", [0.0, 2500.1, -1.0])
+    def test_stats_out_of_range(self, valid_stats, field, value):
+        valid_stats[field] = value
 
-    with pytest.raises(ValidationError):
-        stats.speed = 200
+        with pytest.raises(ValidationError):
+            Stats(**valid_stats)
+
+    @pytest.mark.parametrize(
+        "field",
+        ["speed", "stamina", "power", "guts", "wit"],
+    )
+    @pytest.mark.parametrize("value", [1.0, 2500.0])
+    def test_stats_boundary_values(self, valid_stats, field, value):
+        valid_stats[field] = value
+
+        stats = Stats(**valid_stats)
+
+        assert getattr(stats, field) == value
+
+    def test_stats_rejects_integer_in_strict_mode(self, valid_stats):
+        valid_stats["speed"] = 1500
+
+        stats = Stats(**valid_stats)
+
+        assert stats.speed == 1500.0
+        assert isinstance(stats.speed, float)
+
+    def test_stats_rejects_extra_fields(self, valid_stats):
+        valid_stats["luck"] = 100
+
+        with pytest.raises(ValidationError):
+            Stats(**valid_stats)
+
+    def test_stats_rejects_missing_fields(self, valid_stats):
+        del valid_stats["speed"]
+
+        with pytest.raises(ValidationError):
+            Stats(**valid_stats)
+
+    def test_stats_is_frozen(self):
+        stats = Stats(
+            speed=1500.0,
+            stamina=1200.0,
+            power=1300.0,
+            guts=1000.0,
+            wit=1400.0,
+        )
+
+        with pytest.raises(ValidationError):
+            stats.speed = 1000.0
 
 
 # ------------------------------------------------------------------
 # Aptitudes tests
 # ------------------------------------------------------------------
 
-def test_aptitudes_accept_enum_keys(valid_aptitudes):
-    aptitudes = Aptitudes.model_validate(valid_aptitudes)
+class TestAptitudes:
 
-    assert aptitudes.surfaces == valid_aptitudes["surfaces"]
-    assert aptitudes.distances == valid_aptitudes["distances"]
-    assert aptitudes.strategies == valid_aptitudes["strategies"]
+    def test_valid_aptitudes(self, valid_aptitudes):
+        aptitudes = Aptitudes(**valid_aptitudes)
+
+        assert aptitudes.surfaces[Surface.TURF] == Grade.A
+        assert aptitudes.distances[DistanceCat.SPRINT] == Grade.B
+        assert aptitudes.strategies[Strategy.FRONT] == Grade.S
+
+    def test_converts_uppercase_string_keys(self):
+        aptitudes = Aptitudes(
+            surfaces={"TURF": Grade.A},
+            distances={"SPRINT": Grade.B},
+            strategies={"FRONT": Grade.S},
+        )
+
+        assert Surface.TURF in aptitudes.surfaces
+        assert DistanceCat.SPRINT in aptitudes.distances
+        assert Strategy.FRONT in aptitudes.strategies
+
+    def test_converts_lowercase_string_keys(self):
+        aptitudes = Aptitudes(
+            surfaces={"turf": Grade.A},
+            distances={"sprint": Grade.B},
+            strategies={"front": Grade.S},
+        )
+
+        assert Surface.TURF in aptitudes.surfaces
+        assert DistanceCat.SPRINT in aptitudes.distances
+        assert Strategy.FRONT in aptitudes.strategies
+
+    def test_converts_mixed_case_string_keys(self):
+        aptitudes = Aptitudes(
+            surfaces={"TuRf": Grade.A},
+            distances={"SpRiNt": Grade.B},
+            strategies={"FrOnT": Grade.S},
+        )
+
+        assert Surface.TURF in aptitudes.surfaces
+        assert DistanceCat.SPRINT in aptitudes.distances
+        assert Strategy.FRONT in aptitudes.strategies
+
+    def test_preserves_unknown_enum_keys_for_validation(self):
+        with pytest.raises(ValidationError):
+            Aptitudes(
+                surfaces={"UNKNOWN": Grade.A},
+                distances={"SPRINT": Grade.B},
+                strategies={"FRONT": Grade.S},
+            )
+
+    def test_rejects_invalid_grade(self):
+        with pytest.raises(ValidationError):
+            Aptitudes(
+                surfaces={"TURF": "INVALID"},
+                distances={"SPRINT": Grade.B},
+                strategies={"FRONT": Grade.S},
+            )
+
+    def test_rejects_extra_fields(self):
+        with pytest.raises(ValidationError):
+            Aptitudes(
+                surfaces={"TURF": Grade.A},
+                distances={"SPRINT": Grade.B},
+                strategies={"FRONT": Grade.S},
+                unknown={},
+            )
+
+    def test_rejects_missing_fields(self):
+        with pytest.raises(ValidationError):
+            Aptitudes(
+                surfaces={"TURF": Grade.A},
+                distances={"SPRINT": Grade.B},
+            )
+
+    def test_aptitudes_is_frozen(self):
+        aptitudes = Aptitudes(
+            surfaces={"TURF": Grade.A},
+            distances={"SPRINT": Grade.B},
+            strategies={"FRONT": Grade.S},
+        )
+
+        with pytest.raises(ValidationError):
+            aptitudes.surfaces = {}
 
 
-@pytest.mark.parametrize(
-    ("field", "enum_cls"),
-    [
-        ("surfaces", Surface),
-        ("distances", DistanceCat),
-        ("strategies", Strategy),
-    ],
-)
-def test_aptitudes_convert_string_keys_to_enum_values(field, enum_cls):
-    enum_member = next(iter(enum_cls))
-    data = {
-        "surfaces": {},
-        "distances": {},
-        "strategies": {},
-    }
-    data[field] = {enum_member.name.lower(): Grade.A}
+# ------------------------------------------------------------------
+# Aptitudes conversion tests
+# ------------------------------------------------------------------
 
-    aptitudes = Aptitudes.model_validate(data)
+class TestAptitudeKeyConversion:
 
-    assert enum_member in getattr(aptitudes, field)
-    assert getattr(aptitudes, field)[enum_member] == Grade.A
+    @pytest.mark.parametrize(
+        "key, expected",
+        [
+            ("turf", Surface.TURF),
+            ("dirt", Surface.DIRT),
+        ],
+    )
+    def test_surface_key_conversion(self, key, expected):
+        aptitudes = Aptitudes(
+            surfaces={key: 7},
+            distances={
+                "sprint": 7,
+                "mile": 7,
+                "intermediate": 6,
+                "long": 5,
+                "extended": 4,
+            },
+            strategies={
+                "front": 7,
+                "pace": 6,
+                "late": 5,
+                "end": 4,
+            },
+        )
 
+        assert expected in aptitudes.surfaces
 
-def test_aptitudes_convert_uppercase_string_keys(valid_aptitudes):
-    enum_member = next(iter(Surface))
-    valid_aptitudes["surfaces"] = {
-        enum_member.name.upper(): Grade.A,
-    }
+    @pytest.mark.parametrize(
+        "key, expected",
+        [
+            ("sprint", DistanceCat.SPRINT),
+            ("mile", DistanceCat.MILE),
+            ("intermediate", DistanceCat.INTERMEDIATE),
+            ("long", DistanceCat.LONG),
+            ("extended", DistanceCat.EXTENDED),
+        ],
+    )
+    def test_distance_key_conversion(self, key, expected):
+        aptitudes = Aptitudes(
+            surfaces={"turf": 7, "dirt": 6},
+            distances={key: 7},
+            strategies={
+                "front": 7,
+                "pace": 6,
+                "late": 5,
+                "end": 4,
+            },
+        )
 
-    aptitudes = Aptitudes.model_validate(valid_aptitudes)
+        assert expected in aptitudes.distances
 
-    assert aptitudes.surfaces[enum_member] == Grade.A
+    @pytest.mark.parametrize(
+        "key, expected",
+        [
+            ("front", Strategy.FRONT),
+            ("pace", Strategy.PACE),
+            ("late", Strategy.LATE),
+            ("end", Strategy.END),
+        ],
+    )
+    def test_strategy_key_conversion(self, key, expected):
+        aptitudes = Aptitudes(
+            surfaces={"turf": 7, "dirt": 6},
+            distances={
+                "sprint": 7,
+                "mile": 7,
+                "intermediate": 6,
+                "long": 5,
+                "extended": 4,
+            },
+            strategies={key: 7},
+        )
 
-
-def test_aptitudes_reject_invalid_enum_key(valid_aptitudes):
-    valid_aptitudes["surfaces"] = {"INVALID_SURFACE": Grade.A}
-
-    with pytest.raises(ValidationError):
-        Aptitudes.model_validate(valid_aptitudes)
-
-
-def test_aptitudes_reject_invalid_grade(valid_aptitudes):
-    valid_aptitudes["surfaces"] = {
-        next(iter(Surface)): "INVALID_GRADE",
-    }
-
-    with pytest.raises(ValidationError):
-        Aptitudes.model_validate(valid_aptitudes)
-
-
-def test_aptitudes_reject_extra_field(valid_aptitudes):
-    valid_aptitudes["weather"] = {}
-
-    with pytest.raises(ValidationError):
-        Aptitudes.model_validate(valid_aptitudes)
-
-
-def test_aptitudes_are_immutable(valid_aptitudes):
-    aptitudes = Aptitudes.model_validate(valid_aptitudes)
-
-    with pytest.raises(ValidationError):
-        aptitudes.surfaces = {}
+        assert expected in aptitudes.strategies
 
 
 # ------------------------------------------------------------------
 # Horse tests
 # ------------------------------------------------------------------
 
-def test_horse_accepts_valid_data(valid_horse_data):
-    horse = Horse.model_validate(valid_horse_data)
+class TestHorse:
 
-    assert horse.horse_id == "horse_12345"
-    assert horse.name == "Silver Comet"
-    assert isinstance(horse.stats, Stats)
-    assert isinstance(horse.aptitudes, Aptitudes)
+    def test_valid_horse(self, valid_horse):
+        horse = Horse(**valid_horse)
+
+        assert horse.id == "horse_12345"
+        assert horse.name == "Thunder"
+        assert horse.version == "horse-0.1.0"
+        assert isinstance(horse.stats, Stats)
+        assert isinstance(horse.aptitudes, Aptitudes)
+
+    def test_accepts_version_field_name(self, valid_horse):
+        del valid_horse["$version"]
+        valid_horse["version"] = "horse-0.1.0"
+
+        horse = Horse(**valid_horse)
+
+        assert horse.version == "horse-0.1.0"
+
+    def test_rejects_invalid_horse_id(self, valid_horse):
+        invalid_ids = [
+            "horse_1234",
+            "horse_123456",
+            "horse_abcde",
+            "Horse_12345",
+            "12345",
+        ]
+
+        for invalid_id in invalid_ids:
+            valid_horse["id"] = invalid_id
+
+            with pytest.raises(ValidationError):
+                Horse(**valid_horse)
+
+    @pytest.mark.parametrize(
+        "name",
+        ["", "A", "A" * 19],
+    )
+    def test_rejects_invalid_name_length(self, valid_horse, name):
+        valid_horse["name"] = name
+
+        with pytest.raises(ValidationError):
+            Horse(**valid_horse)
+
+    def test_accepts_name_boundaries(self, valid_horse):
+        for name in ["AB", "A" * 18]:
+            valid_horse["name"] = name
+
+            horse = Horse(**valid_horse)
+
+            assert horse.name == name
+
+    def test_rejects_extra_fields(self, valid_horse):
+        valid_horse["unknown"] = "value"
+
+        with pytest.raises(ValidationError):
+            Horse(**valid_horse)
+
+    def test_rejects_missing_fields(self, valid_horse):
+        del valid_horse["name"]
+
+        with pytest.raises(ValidationError):
+            Horse(**valid_horse)
+
+    def test_rejects_non_string_version(self, valid_horse):
+        valid_horse["$version"] = 1.0
+
+        with pytest.raises(ValidationError):
+            Horse(**valid_horse)
+
+    def test_horse_is_frozen(self, valid_horse):
+        horse = Horse(**valid_horse)
+
+        with pytest.raises(ValidationError):
+            horse.name = "Lightning"
+
+    def test_serialization_uses_version_alias(self, valid_horse):
+        horse = Horse(**valid_horse)
+
+        serialized = horse.model_dump()
+
+        assert "$version" in serialized
+        assert "version" not in serialized
+        assert serialized["$version"] == "horse-0.1.0"
+
+    def test_serialization_can_use_field_names(self, valid_horse):
+        horse = Horse(**valid_horse)
+
+        serialized = horse.model_dump(by_alias=False)
+
+        assert "version" in serialized
+        assert "$version" not in serialized
 
 
-@pytest.mark.parametrize(
-    "horse_id",
-    [
-        "horse_1234",  # Too few digits
-        "horse_123456",  # Too many digits
-        "Horse_12345",  # Wrong prefix casing
-        "horse_abcde",  # Non-numeric suffix
-        "horse-12345",  # Wrong separator
-        "",
-    ],
-)
-def test_horse_rejects_invalid_id(valid_horse_data, horse_id):
-    valid_horse_data["horse_id"] = horse_id
+# ------------------------------------------------------------------
+# Horse JSON tests
+# ------------------------------------------------------------------
 
-    with pytest.raises(ValidationError):
-        Horse.model_validate(valid_horse_data)
+class TestHorseJsonLoading:
 
+    def test_load_valid_horse_from_json(self, valid_horse):
+        horse_json = json.dumps(valid_horse)
 
-@pytest.mark.parametrize(
-    "name",
-    [
-        "",
-        "A" * 19,
-    ],
-)
-def test_horse_rejects_invalid_name_length(valid_horse_data, name):
-    valid_horse_data["name"] = name
+        horse = Horse.model_validate_json(horse_json)
 
-    with pytest.raises(ValidationError):
-        Horse.model_validate(valid_horse_data)
+        assert isinstance(horse, Horse)
+        assert horse.id == "horse_12345"
+        assert horse.name == "Thunder"
 
+        assert horse.stats.speed == 1500.0
 
-def test_horse_accepts_name_at_maximum_length(valid_horse_data):
-    valid_horse_data["name"] = "A" * 18
+        assert horse.aptitudes.surfaces[Surface.TURF] == Grade.A
+        assert horse.aptitudes.surfaces[Surface.DIRT] == Grade.B
 
-    horse = Horse.model_validate(valid_horse_data)
+        assert horse.aptitudes.distances[DistanceCat.SPRINT] == Grade.A
+        assert horse.aptitudes.distances[DistanceCat.MILE] == Grade.A
+        assert horse.aptitudes.distances[DistanceCat.INTERMEDIATE] == Grade.B
+        assert horse.aptitudes.distances[DistanceCat.LONG] == Grade.C
+        assert horse.aptitudes.distances[DistanceCat.EXTENDED] == Grade.D
 
-    assert len(horse.name) == 18
-
-
-def test_horse_rejects_extra_field(valid_horse_data):
-    valid_horse_data["color"] = "black"
-
-    with pytest.raises(ValidationError):
-        Horse.model_validate(valid_horse_data)
-
-
-def test_horse_rejects_missing_stats(valid_horse_data):
-    del valid_horse_data["stats"]
-
-    with pytest.raises(ValidationError):
-        Horse.model_validate(valid_horse_data)
-
-
-def test_horse_is_immutable(valid_horse_data):
-    horse = Horse.model_validate(valid_horse_data)
-
-    with pytest.raises(ValidationError):
-        horse.name = "New Name"
+        assert horse.aptitudes.strategies[Strategy.FRONT] == Grade.A
+        assert horse.aptitudes.strategies[Strategy.PACE] == Grade.B
+        assert horse.aptitudes.strategies[Strategy.LATE] == Grade.C
+        assert horse.aptitudes.strategies[Strategy.END] == Grade.D
