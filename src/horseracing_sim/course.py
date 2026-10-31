@@ -57,4 +57,4 @@ class Course(BaseModel):
     @classmethod
     def sort_events(cls, events: list[CourseEventType]) -> list[
         CourseEventType]:
-        return sorted(events, key=lambda e: e.trigger_at)
+        return sorted(events, key=lambda e: (e.trigger_at, e.id))
