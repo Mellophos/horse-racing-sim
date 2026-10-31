@@ -3,7 +3,7 @@ from importlib.resources import files
 
 import pytest
 
-from horse_racing_sim.validation.json_validator import validate_json
+from horseracing_sim.validation.json_validator import validate_json
 
 ASSETS_DIR = files("horseracing_sim") / "assets"
 
