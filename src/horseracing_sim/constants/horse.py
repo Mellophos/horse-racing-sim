@@ -15,7 +15,7 @@ class Grade(Enum):
 
 @unique
 class Strategy(Enum):
-    RUNUAWAY = 0
+    RUNAWAY = 0
     FRONT = 1
     PACE = 2
     LATE = 3
