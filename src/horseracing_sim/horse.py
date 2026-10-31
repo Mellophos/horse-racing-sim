@@ -11,7 +11,8 @@ class Horse(BaseModel):
         frozen=True,
         strict=True,
         serialize_by_alias=True,
-        populate_by_name=True,
+        validate_by_name=True,
+        validate_by_alias=True,
     )
 
     version: str = Field(alias="$version")
